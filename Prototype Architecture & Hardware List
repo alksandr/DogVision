@@ -1,0 +1,82 @@
+# Prototype Architecture & Hardware List
+## Dog Vision: Scent-to-Color Blue Mapping Device
+
+### Overview
+This document outlines the hardware and system architecture to build a prototype that reads **smell intensity** and maps it into a **blue channel color output** on a display, creating a kind of “dog vision.”
+
+---
+
+## System Architecture
+
+### 1. Scent Sensing Unit
+- **Electronic Nose Sensor Array**
+  - An array of VOC (volatile organic compound) sensors that detect gases and smell molecules.  
+  - Common families include **MOS (metal-oxide semiconductor)** sensors capable of responding to a range of odors. :contentReference[oaicite:0]{index=0}
+
+- **Sampling and Conditioning**
+  - Optionally include flow control or housing to ensure consistent airflow.
+  - Temperature/humidity compensation circuits to reduce drift.
+
+---
+
+## Hardware Components
+
+### A. Sensor Modules
+- Multiple VOC gas sensors (e.g., MQ series or MOS types).
+- Metal-oxide semiconductor sensors generate signals based on VOC exposure. :contentReference[oaicite:1]{index=1}
+
+**Example Sensor List:**
+- MQ-135 (general VOC detection)
+- MQ-2 (smoke/LPG)
+- MQ-4/MQ-8 (specific volatiles)
+- MEMS gas sensors (optional higher sensitivity) :contentReference[oaicite:2]{index=2}
+
+---
+
+### B. Microcontroller / SBC
+- **Arduino Mega / Uno / ESP32 / Raspberry Pi**
+  - Reads sensor array via ADC.
+  - Pre-processes signals and normalizes into a range (e.g., 0–255).
+
+---
+
+### C. Communication
+- **Data Link Between Sensor Unit and Display**
+  - USB Serial
+  - Bluetooth/BLE
+  - Wi-Fi (ESP32 or Pi)
+  - WebSockets
+
+---
+
+### D. Display Controller
+- A PC, tablet, or embedded display that renders a color map.
+- Software reads incoming values and updates colors in real time.
+
+---
+
+## Signal Processing
+
+### Normalization
+- Convert raw sensor outputs into a **single “scent intensity” value** mapped to 0–255.
+- Might involve filtering and averaging across multiple sensors.
+
+### Mapping to Blue Channel
+- Send the normalized smell value (0–255) to the display application.
+- Display app updates the **blue channel of the color** accordingly.
+
+---
+
+## Optional Enhancements
+
+### Spatial Scanning
+A rod with multiple sensor groups can generate a grid of smell samples to create a **2D scent map**.
+
+### Machine Learning
+Train a ML model to recognize patterns or reduce noise if odors vary significantly. :contentReference[oaicite:3]{index=3}
+
+---
+
+## Notes & References
+- Electronic noses use sensor arrays to detect VOC mixtures and produce distinct odor signatures. :contentReference[oaicite:4]{index=4}
+- Low-cost sensor projects have achieved real-time odor detection and classification using microcontrollers. :contentReference[oaicite:5]{index=5}
