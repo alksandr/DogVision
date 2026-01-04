@@ -1,161 +1,182 @@
-# Product Requirements Document (PRD)
-## Scent-to-Color Blue Mapping Display System
+# 🐶 Product Requirements Document (PRD)
+## Dog Vision — Spatial Scent-to-Color Visualization System
 
-**Title:** Scent-to-Color Blue Mapping Display  
-**Author:** (Product Lead)  
-**Date:** (YYYY-MM-DD)  
-**Version:** 1.0  
-**Status:** Draft / Final
-
----
-
-## 1. Document Overview
-
-**Purpose:**  
-Define product requirements for a device that senses ambient scent intensity and visualizes it by altering the **blue channel** on a display. This document serves as the core source of truth for hardware, firmware, and software teams during development.
+**Product Name:** Dog Vision  
+**Version:** 1.1  
+**Status:** Draft  
+**Owner:** Aleksandr Surguy
+**Last Updated:** 1/4/2026
 
 ---
 
-## 2. Problem Statement & Opportunity
+## 1. Overview
 
-Smell is under-represented in digital interfaces despite its importance in contexts like environmental monitoring, immersive experiences, or assistive tech. There is currently no widely accessible system that visualizes scent intensity in real time as a *color response* on screens. This product aims to bridge that gap.
-
-**Goals:**
-- Detect ambient chemical signatures and derive a numeric “scent intensity” value.
-- Map that value to a blue color channel output on a connected display.
-- Provide intuitive visual feedback reflecting smell changes in real time.
+### 1.1 Purpose
+Dog Vision is a hardware + software system that allows humans to **see smell** by converting spatial scent intensity into a visual map on a monitor. A rod-mounted sensor array scans the environment, collects smell data over space, and renders it as a **blue-intensity heatmap**, providing a visual analogue of how dogs perceive scent landscapes.
 
 ---
 
-## 3. Target Users & Personas
+## 2. Problem Statement
 
-**Primary Users:**
-- Developers / Makers building scent-aware interactive installations.
-- Researchers / Educators studying olfactory displays or sensory substitution.
-- Accessibility Tech Developers adding sensory substitutions for users with visual impairments.
+Humans lack the ability to perceive spatial scent information directly, while animals like dogs rely heavily on smell for navigation, detection, and understanding of their environment. There is no consumer or research-grade tool that provides a **real-time spatial visualization of smell**.
 
-**Secondary Users:**
-- Artists / Installers creating visual installations responsive to ambient smells.
-
----
-
-## 4. Success Metrics
-
-A successful launch and validation of the product will be measured by:
-
-- **Detection responsiveness:** Scent intensity updates reflected visually within 500 ms of change.
-- **Color mapping accuracy:** Blue output value consistently scaled from 0–255 based on sensor range.
-- **Sufficient documentation:** Completed API and hardware integration docs for further development.
+Dog Vision solves this by:
+- Digitizing ambient odors,
+- Mapping them into spatial data,
+- Visualizing them as color on a screen.
 
 ---
 
-## 5. Scope
+## 3. Goals
 
-### In-Scope
-- Hardware sensor interface for capturing scent analog/digital data.
-- Firmware to read sensors and broadcast normalized intensity values.
-- Display interface that visualizes the *blue channel* in real time.
-- Calibration routine to define sensor low/high bounds.
+- Enable real-time spatial mapping of scent intensity.
+- Convert scent intensity into a blue color channel on a display.
+- Provide a simple and intuitive visual representation of smell distribution.
+- Enable research, education, accessibility, and artistic applications.
 
-### Out-of-Scope
-- Replacement of RGB sensors — this device only *maps smell to blue*.
-- Scent classification beyond intensity scaling (e.g., identifying odor types).
+---
+
+## 4. Target Users
+
+### Primary
+- Researchers (olfaction, robotics, animal behavior)
+- Developers and engineers
+- Accessibility technology developers
+
+### Secondary
+- Artists and installation designers
+- Educators
+- Science museums / exhibits
+
+---
+
+## 5. Key Use Case
+
+**Dog Vision Mode:**  
+A user moves a sensor rod through an environment. The system collects smell data at different positions and renders a live 2D color map on a screen, where:
+
+- X/Y = physical scan position  
+- Blue intensity = scent strength  
+
+Result: A visual "smell landscape".
 
 ---
 
 ## 6. Functional Requirements
 
-### 6.1 Scent Sensing & Input
-- The system must support a multi-sensor volatile organic compound (VOC) sensor array.
-- Readings must be normalized and aggregated into a 0–255 “scent intensity” value per update cycle.
-
-**User Story:**  
-*As a user, I want the device to report scent intensity so that the display shows an appropriate blue level.*
+### 6.1 Sensing
+- The system shall include a rod-mounted electronic nose (multi-sensor VOC array).
+- The system shall sample scent at ≥ 5 Hz per sensor.
+- The system shall timestamp and spatially index each reading.
 
 ---
 
-### 6.2 Blue Channel Mapping
-- The computed scent intensity value must be used as the **blue channel** in an RGB color scale.
-- The display must update in real time based on live scent data.
-
-**User Story:**  
-*As a developer, I need the blue value to reflect real scent input so visuals change with smell.*
+### 6.2 Data Processing
+- Raw sensor values must be normalized into a 0–255 range.
+- The system must support smoothing and filtering to reduce noise.
+- The system must support calibration for baseline ambient smell.
 
 ---
 
-### 6.3 Calibration
-- Provide a calibration workflow to set low/high sensor response values and associated blue range mapping.
+### 6.3 Spatial Mapping
+- Each sensor reading shall be associated with a spatial coordinate.
+- The system shall build a 2D or 3D scent intensity grid.
+- The system shall interpolate between points for continuous maps.
 
 ---
 
-### 6.4 Display Interface
-- The system must broadcast the blue value to a screen controller or connected app via a standard protocol (USB serial, WebSockets, or BLE).
+### 6.4 Visualization
+- The system shall display a real-time heatmap on a monitor.
+- Blue channel intensity shall represent scent intensity.
+- The display shall update within 500 ms of new data.
+- The system shall support playback of recorded scans.
 
-**User Story:**  
-*As a display app developer, I want to receive the intensity value easily so I can render the background color.*
+---
+
+### 6.5 Calibration
+- The system shall provide a calibration workflow for:
+  - Baseline air
+  - Known scent references
+  - Sensor drift correction
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Updates must occur at least 2× per second.
-- **Robustness:** Handle sensor noise via smoothing/filtering.
-- **Modular:** Components (sensor, processing, display) should be reusable in other projects.
+| Category | Requirement |
+|----------|-------------|
+| Latency | ≤ 500 ms end-to-end |
+| Stability | No crashes during 8-hour operation |
+| Accuracy | ±5% repeatability under same conditions |
+| Portability | Rod weight ≤ 1 kg |
+| Extensibility | Modular sensors and visualization |
 
 ---
 
-## 8. Technical & Environmental Specifications
+## 8. Technical Architecture
 
-- **Sensors:** Support analog/digital VOC sensors with calibration.
-- **Processing:** Microcontroller or SBC (e.g., Arduino, Raspberry Pi).
-- **Display:** Any device capable of running a simple color update application.
-- **Connectivity:** USB, Wi-Fi, or Bluetooth between sensor unit and display.
+### Hardware
+- Multi-sensor VOC / gas sensor array
+- Microcontroller or SBC (ESP32 / Raspberry Pi)
+- Position tracking (IMU or external tracker)
+- Power source (battery or USB)
 
----
+### Software
+- Firmware for sensor acquisition
+- Processing pipeline for normalization + smoothing
+- Visualization client (web, desktop, or Unity)
 
-## 9. Assumptions & Constraints
-
-**Assumptions:**  
-- Smell intensity correlates to an easily measurable sensor response range.
-
-**Constraints:**  
-- Sensors have inherent variability and environmental factors (temperature/humidity) that may affect accuracy.
-- Display hardware must support dynamic color updates with low latency.
+### Communication
+- USB, Wi-Fi, or Bluetooth
 
 ---
 
-## 10. Dependencies
+## 9. Data Flow
 
-- **Hardware availability:** Specific electronic nose module or VOC sensors.
-- **Software libraries** for data acquisition and color rendering.
-- **Communication protocol readiness** between firmware and visualization app.
+Sensor Rod → Microcontroller → Normalize → Map to Spatial Grid → Render on Screen
 
----
-
-## 11. Timeline & Milestones
-
-| Phase                  | Duration   | Goal                                  |
-|------------------------|------------|----------------------------------------|
-| Requirements Finalization | 1 week     | Approve PRD                            |
-| Hardware Prototype     | 3 weeks    | Functional sensor readout             |
-| Firmware & Calibration | 2 weeks    | Normalization & broadcast             |
-| Visualization App      | 3 weeks    | Display blue channel mapping          |
-| Integration Testing    | 2 weeks    | Real-world validation                  |
-| Documentation          | 1 week     | Release tech docs                     |
+yaml
+Copy code
 
 ---
 
-## 12. Risks & Mitigations
+## 10. Risks & Mitigations
 
-**Risk:** Sensor noise could cause unstable intensity values  
-**Mitigation:** Apply signal filtering and smoothing.
+| Risk | Mitigation |
+|------|------------|
+| Sensor noise | Filtering + averaging |
+| Sensor drift | Scheduled recalibration |
+| Environmental variability | Temperature/humidity compensation |
+| Slow response | Reduce smoothing window |
 
-**Risk:** Calibration may drift over time  
-**Mitigation:** Scheduled recalibration procedures.
+---
+
+## 11. Milestones
+
+| Phase | Duration | Outcome |
+|-------|----------|----------|
+| Requirements | 1 week | Approved PRD |
+| Hardware Prototype | 3 weeks | Functional rod |
+| Firmware | 2 weeks | Stable sensor pipeline |
+| Visualization | 3 weeks | Real-time heatmap |
+| Testing | 2 weeks | Validated system |
+| Documentation | 1 week | Public release |
+
+---
+
+## 12. Success Criteria
+
+- User can scan an environment and observe a coherent smell heatmap.
+- The blue channel changes consistently with scent presence.
+- The system runs reliably for extended sessions.
 
 ---
 
 ## 13. Glossary
 
-- **Scent Intensity:** Normalized numeric representation of smell strength (0–255).  
-- **Blue Channel:** The B value in RGB used for color output.
+- **VOC:** Volatile Organic Compound  
+- **Electronic Nose:** Multi-sensor smell detection system  
+- **Smell Heatmap:** Visual spatial representation of scent intensity  
+- **Blue Channel:** The B component of RGB used for scent mapping  
+
+---
