@@ -1,0 +1,60 @@
+# Software & Visualization Plan
+## Dog Vision: Scent-to-Color Blue Mapping
+
+### 1. Firmware (Microcontroller/Embedded)
+
+#### Tasks
+- **Read Analog Signals**
+  - Read VOC sensor outputs using ADC (analog-to-digital converter).
+- **Normalize Data**
+  - Convert raw sensor values into a normalized intensity range (e.g., 0–255).
+- **Optional Filtering**
+  - Apply smoothing (low-pass filter, moving average) to reduce noise.
+- **Transmit Data**
+  - Send the normalized value to the visualization system using chosen protocol:
+    - Serial (USB)
+    - BLE
+    - TCP/Wi-Fi
+
+---
+
+### 2. Communication Protocol
+
+| Protocol | Pros | Cons |
+|----------|------|------|
+| USB Serial | Simple & reliable | Requires cable |
+| BLE | Wireless & low power | Range limited |
+| Wi-Fi | Flexible | Power needs |
+
+---
+
+### 3. Display Software (PC/Web/App)
+
+#### Core Responsibilities
+- **Receive Data**
+  - Listen to incoming data (serial, BLE, WebSocket).
+- **Visual Mapping**
+  - Convert received intensity (0–255) into a blue color value.
+    ```js
+    backgroundColor = `rgb(0, 0, ${blueValue})`
+    ```
+- **Spatial Visualization (optional)**
+  - If scanning rod provides multiple points, render a **2D grid**:
+    - Color intensity at each cell = smell strength.
+
+---
+
+### 4. Toolchain Options
+
+| Option | Language | Strength |
+|--------|----------|----------|
+| Web App | JavaScript/HTML5 | Easy visualization |
+| Python | Python + Pygame | Quick prototyping |
+| Unity | C# | Real-time interactive graphics |
+
+---
+
+### 5. Data Flow
+
+```plaintext
+Sensors → MCU → Normalized Value → Host → Visualization
