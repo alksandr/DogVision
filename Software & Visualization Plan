@@ -56,7 +56,6 @@
 
 ### 5. Data Flow
 
-```plaintext
 Sensors → MCU → Normalized Value → Host → Visualization
 6. Calibration Routine
 Baseline Recording
