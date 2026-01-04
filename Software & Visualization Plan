@@ -58,3 +58,32 @@
 
 ```plaintext
 Sensors → MCU → Normalized Value → Host → Visualization
+6. Calibration Routine
+Baseline Recording
+
+Record baseline values in clean air.
+
+Max/Min Mapping
+
+Set upper/lower bounds for VOC signals.
+
+Dynamic Adjustments
+
+Rescale in firmware or software dynamically.
+
+7. UI Concepts
+Simple Mode
+Full screen with blue intensity representing smell strength.
+
+Heatmap Mode
+A grid representing spatial scans:
+
+Rows/columns map to physical coordinates.
+
+Color saturation = smell intensity.
+
+8. Software Requirements
+Requirement	Detail
+Real-time update	At least 2× updates per second
+Custom mapping	Adjustable sensitivity
+Logging	Optional log of readings for analysis
