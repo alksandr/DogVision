@@ -1,0 +1,19 @@
+# Dog Vision Hardware Architecture & Components
+
+## Overview
+This document outlines the hardware and architectural components needed for a prototype device that reads smell intensity and visualizes it by modifying the blue color channel on a display.
+
+## System Architecture
+- VOC sensor array (electronic nose)
+- Microcontroller (ESP32 / Arduino / Raspberry Pi)
+- Communication (USB, BLE, Wi-Fi)
+- Display host
+
+## Hardware
+- MQ or MEMS VOC sensors
+- ESP32 controller
+- Power module
+- Enclosure / scanning rod
+
+## Notes
+Sensor outputs are normalized and sent to the host for visualization.
